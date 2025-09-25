@@ -8,6 +8,18 @@ namespace NetChat.Models
     public class Tag : AuditEntity
     {
         public Tag() { }
-        public string Name { get; set; }
+
+        public Tag(string name)
+        {
+            Name = name;
+        }
+
+        public Tag Update(string name)
+        {
+            Name = name;
+            return this;
+        }
+
+        public string Name { get; private set; }
     }
 }
