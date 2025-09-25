@@ -9,11 +9,16 @@ namespace NetChat.Models
 
         }
 
-        public User(string email, string passwordHash, string name, List<Tag> tags)
+        public User(string email, string passwordHash, string name, List<Guid> tags_ids)
         {
             Email = email;
             PasswordHash = passwordHash;
             Name = name;
+            var tags = new List<UserTag>();
+            foreach (var tagId in tags_ids)
+            {
+                tags.Add(new UserTag(tagId, Id));
+            }
             Tags = tags;
         }
 
@@ -21,6 +26,6 @@ namespace NetChat.Models
         public string PasswordHash { get; set; }
         public string Name { get; set; }
         public List<Message> Messages { get; set; }
-        public List<Tag> Tags { get; set; }
+        public List<UserTag> Tags { get; set; }
     }
 }

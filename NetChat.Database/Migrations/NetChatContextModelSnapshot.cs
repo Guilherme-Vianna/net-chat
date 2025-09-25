@@ -82,14 +82,9 @@ namespace NetChat.Database.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Name");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("tags", (string)null);
                 });
@@ -125,6 +120,10 @@ namespace NetChat.Database.Migrations
 
             modelBuilder.Entity("NetChat.Models.UserTag", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -136,6 +135,8 @@ namespace NetChat.Database.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("TagId");
 
@@ -167,13 +168,6 @@ namespace NetChat.Database.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("NetChat.Models.Tag", b =>
-                {
-                    b.HasOne("NetChat.Models.User", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("NetChat.Models.UserTag", b =>
                 {
                     b.HasOne("NetChat.Models.Tag", "Tag")
@@ -183,7 +177,7 @@ namespace NetChat.Database.Migrations
                         .IsRequired();
 
                     b.HasOne("NetChat.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Tags")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

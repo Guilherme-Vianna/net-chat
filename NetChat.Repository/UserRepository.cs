@@ -19,5 +19,10 @@ namespace NetChat.Repository
             await context.SaveChangesAsync();
             return registered.Entity;
         }
+
+        public async Task<bool> ExistEmail(string email)
+        {
+            return await context.Users.AnyAsync(u => u.Email == email);
+        }
     }
 }

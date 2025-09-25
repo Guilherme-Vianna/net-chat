@@ -5,11 +5,17 @@ using System.Text;
 
 namespace NetChat.Models
 {
-    public class UserTag : Audit
+    public class UserTag : AuditEntity
     {
         public UserTag()
         {
 
+        }
+
+        public UserTag(Guid tagId, Guid userId)
+        {
+            TagId = tagId;
+            UserId = userId;
         }
 
         public Tag Tag { get; set; }

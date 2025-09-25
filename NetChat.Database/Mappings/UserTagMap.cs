@@ -10,13 +10,13 @@ public class UserTagMap : IEntityTypeConfiguration<UserTag>
         builder
             .ToTable("user_tags");
 
-        builder.HasNoKey();
-
-        builder.HasOne(x => x.User)
-            .WithMany()
+        builder
+            .HasOne(x => x.User)
+            .WithMany(x => x.Tags)
             .HasForeignKey(x => x.UserId);
 
-        builder.HasOne(x => x.Tag)
+        builder
+           .HasOne(x => x.Tag)
            .WithMany()
            .OnDelete(DeleteBehavior.Restrict)
            .HasForeignKey(x => x.TagId);

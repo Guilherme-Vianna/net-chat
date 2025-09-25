@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NetChat.Database.Migrations
 {
     [DbContext(typeof(NetChatContext))]
-    [Migration("20250924224259_initial_creation")]
-    partial class initial_creation
+    [Migration("20250925000329_InitialCreation")]
+    partial class InitialCreation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,14 +85,9 @@ namespace NetChat.Database.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Name");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("tags", (string)null);
                 });
@@ -128,6 +123,10 @@ namespace NetChat.Database.Migrations
 
             modelBuilder.Entity("NetChat.Models.UserTag", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -139,6 +138,8 @@ namespace NetChat.Database.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("TagId");
 
@@ -170,23 +171,16 @@ namespace NetChat.Database.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("NetChat.Models.Tag", b =>
-                {
-                    b.HasOne("NetChat.Models.User", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("NetChat.Models.UserTag", b =>
                 {
                     b.HasOne("NetChat.Models.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("NetChat.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Tags")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
