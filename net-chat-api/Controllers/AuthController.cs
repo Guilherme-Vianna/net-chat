@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NetChat.Services.Interfaces;
 using NetChat.Services.Models.Dto;
 using NetChat.Services.Models.UpdateDto;
@@ -14,6 +15,13 @@ namespace net_chat_api.Controllers
         {
             var result = await service.Login(dto);
             return Ok(result);
+        }
+        
+        [Authorize]
+        [HttpGet]
+        public IActionResult VerifyAuth()
+        {
+            return NoContent();
         }
     }
 }
