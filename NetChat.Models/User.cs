@@ -22,7 +22,7 @@ namespace NetChat.Models
             Tags = tags;
         }
         
-        public void Update(string email, string name, List<Guid> tags_ids)
+        public void UpdateBasicProperties(string email, string name, List<Guid> tags_ids)
         {
             Email = email;
             Name = name;
@@ -31,6 +31,11 @@ namespace NetChat.Models
             {
                 Tags.Add(new UserTag(tagId, Id));
             }
+        }
+        
+        public void UpdatePassword(string passwordHash)
+        {
+            PasswordHash = passwordHash;
         }
 
         public string Email { get; set; }

@@ -9,8 +9,10 @@ namespace NetChat.Services.Interfaces
 {
     public interface IUserService
     {
+        Task<UserViewModel> GetUser(Guid userId);
         Task<UserViewModel> CreateAsync(CreateUserDto userViewModel);
         Task<UserViewModel> UpdateAsync(UpdateUserDto dto);
+        Task<UserViewModel> UpdatePasswordAsync(UpdatePasswordDto dto);
         Task<Guid> GetUserId(string email);
         Task<string> GetUserPassword(string email);
         Task<bool> Exist(string email);

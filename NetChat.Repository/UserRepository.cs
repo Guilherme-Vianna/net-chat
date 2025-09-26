@@ -40,6 +40,8 @@ namespace NetChat.Repository
             return await context
                 .Users
                 .AsNoTracking()
+                .Include(x => x.Tags)
+                .ThenInclude(x => x.Tag)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 

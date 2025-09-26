@@ -14,7 +14,6 @@ namespace NetChat.Repository.Interfaces
         public Task<User?> GetUserByIdAsyncWithTags(Guid id);
         public Task<User?> GetUserByEmailAsync(string email);
         public Task<bool> ExistEmail(string email, Guid userId);
-
         public Task<bool> ExistEmail(string email);
     }
 }

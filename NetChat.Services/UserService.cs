@@ -11,6 +11,19 @@ namespace NetChat.Services
 {
     public class UserService(IUserRepository repository) : IUserService
     {
+        public async Task<UserViewModel> GetUser(Guid userId)
+        {
+            var userSearch = await repository.GetUserByIdAsync(userId);
+            if (userSearch == null) throw new Exception("User not found");
+            var result = new UserViewModel(
+                id: userSearch.Id, 
+                email: userSearch.Email, 
+                name: userSearch.Email, 
+                userTags: userSearch.Tags
+            );
+            return result;
+        }
+
         public async Task<UserViewModel> CreateAsync(CreateUserDto createUserDto)
         {
             await repository.StartTransaction();
@@ -37,12 +50,29 @@ namespace NetChat.Services
             var user = await repository.GetUserByIdToEditAsync(dto.id);
             if (user == null) throw new Exception("User not exist!");
             
-            user.Update(dto.email, dto.name, dto.tags_ids);
+            user.UpdateBasicProperties(dto.email, dto.name, dto.tags_ids);
             await repository.Update(user);
             var result = await repository.GetUserByIdAsyncWithTags(user.Id);
             if (result == null) throw new Exception("User not found!");
             var response = new UserViewModel(result.Id, result.Email, result.Name, result.Tags);
             
+            await repository.CommitTransaction();
+            return response;
+        }
+        
+        public async Task<UserViewModel> UpdatePasswordAsync(UpdatePasswordDto dto)
+        {
+            await repository.StartTransaction();
+            var user = await repository.GetUserByIdToEditAsync(dto.id);
+            if (user == null) throw new Exception("User not exist!");
+            var correctPassword = PasswordHasher.VerifyPassword(dto.old_password, user.PasswordHash);
+            if(correctPassword == false) throw new Exception("Password is incorrect!");
+            var passwordHash = PasswordHasher.HashPassword(dto.new_password);
+            user.UpdatePassword(passwordHash);
+            await repository.Update(user);
+            var result = await repository.GetUserByIdAsyncWithTags(user.Id);
+            if (result == null) throw new Exception("User not found!");
+            var response = new UserViewModel(result.Id, result.Email, result.Name, result.Tags);
             await repository.CommitTransaction();
             return response;
         }
