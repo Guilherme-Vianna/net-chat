@@ -7,6 +7,6 @@ namespace NetChat.Models.Base
     public class AuditEntity : Audit
     {
         public AuditEntity() { }
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; } 
     }
 }

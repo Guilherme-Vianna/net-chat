@@ -20,6 +20,6 @@ namespace NetChat.Services.Models.ViewModels
         public Guid Id { get; set; }
         public string Email { get; set; }
         public string Name { get; set; }
-        public List<UserTagViewModel> tags { get; set; } = new();
+        public List<UserTagViewModel> tags { get; set; } = [];
     }
 }

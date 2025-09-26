@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
 using NetChat.Services.Interfaces;
-using NetChat.Services.Models.CreateDto;
+using NetChat.Services.Models.UpdateDto;
 using System.Threading.Tasks;
+using NetChat.Services.Models.Dto;
 
 namespace net_chat_api.Controllers
 {
@@ -14,6 +14,14 @@ namespace net_chat_api.Controllers
         public async Task<IActionResult> Post([FromBody] CreateUserDto dto)
         {
             var result = await service.CreateAsync(dto);
+            return Ok(result);
+        }
+        
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserDto dto)
+        {
+            dto.id = id;
+            var result = await service.UpdateAsync(dto);
             return Ok(result);
         }
     }

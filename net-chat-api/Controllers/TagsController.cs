@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetChat.Services.Interfaces;
 using NetChat.Services.Models.CreateDto;
+using NetChat.Services.Models.UpdateDto;
 using System.Threading.Tasks;
 
 namespace net_chat_api.Controllers

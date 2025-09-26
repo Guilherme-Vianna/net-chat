@@ -2,6 +2,7 @@
 using NetChat.Repository.Interfaces;
 using NetChat.Services.Interfaces;
 using NetChat.Services.Models.CreateDto;
+using NetChat.Services.Models.UpdateDto;
 using NetChat.Services.Models.ViewModels;
 using System;
 using System.Collections.Generic;
