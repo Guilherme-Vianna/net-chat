@@ -61,6 +61,7 @@ namespace net_chat_api
                 app.MapOpenApi();
             }
 
+            app.UseWebSockets();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
