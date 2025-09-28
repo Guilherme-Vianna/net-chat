@@ -8,6 +8,7 @@ namespace NetChat.Repository.Interfaces
     public interface IUserRepository : IBaseRepository
     {
         public Task<User> CreateUser(User user);
+        public Task<List<Guid>> GetUsersIdsByTags(List<Guid> tags_ids, Guid user_id);
         public Task<User?> GetUserByIdAsync(Guid id);
         public Task<User?> GetUserByIdToEditAsync(Guid id);
         public Task Update(User user);

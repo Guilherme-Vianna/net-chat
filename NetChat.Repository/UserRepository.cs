@@ -3,6 +3,7 @@ using NetChat.Database;
 using NetChat.Models;
 using NetChat.Repository.Interfaces;
 using System;
+using System.Collections.Immutable;
 
 namespace NetChat.Repository
 {
@@ -11,6 +12,21 @@ namespace NetChat.Repository
         public async Task<List<User>> GetUsersAsync() 
         {
             return await context.Users.ToListAsync();
+        }
+
+        // TODO: Pensar em algum algoritmo de conjuntos
+        public async Task<List<Guid>> GetUsersIdsByTags(List<Guid> tags_ids, Guid userId)
+        {
+            var userIds = await context
+                .Users
+                .Include(x => x.Tags)
+                .Where(x => x.Tags.Select(x =>x.TagId)
+                    .Any(x => tags_ids.Contains(x)))
+                .Where(x => x.Id != userId)
+                .Select(x => x.Id)
+                .ToListAsync();
+
+            return userIds;
         }
 
         public async Task<User> CreateUser(User user)
