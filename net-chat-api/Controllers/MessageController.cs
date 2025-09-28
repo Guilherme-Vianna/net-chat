@@ -18,9 +18,9 @@ namespace net_chat_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int page, [FromQuery] int page_size)
+        public async Task<IActionResult> Get([FromQuery] Guid sender_id, [FromQuery] int page, [FromQuery] int page_size)
         {
-            var result = await service.GetMessages(page, page_size);
+            var result = await service.GetMessages(sender_id, page, page_size);
             return Ok(result);
         }
     }

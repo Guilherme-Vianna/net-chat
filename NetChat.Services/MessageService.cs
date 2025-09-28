@@ -18,9 +18,9 @@ public class MessageService(IMessageRepository messageRepository) : IMessageServ
         return result;
     }
     
-    public async Task<List<MessageViewModel>> GetMessages(int page, int page_size)
+    public async Task<List<MessageViewModel>> GetMessages(Guid sender_id, int page, int page_size)
     {
-        var messages = await messageRepository.GetMessagesAsync(page, page_size);
+        var messages = await messageRepository.GetMessagesAsync(page, page_size,sender_id);
         var result = new List<MessageViewModel>();
         foreach (var message in messages)
         {

@@ -14,7 +14,7 @@ public class MessageRepository(NetChatContext context) : IMessageRepository
         return entity.Entity;
     }
 
-    public async Task<List<Message>> GetMessagesAsync(int page, int page_size)
+    public async Task<List<Message>> GetMessagesAsync(int page, int page_size, Guid sender_id)
     {
         if (page < 1) page = 1;
         if (page_size < 1) page_size = 10; 
@@ -22,6 +22,7 @@ public class MessageRepository(NetChatContext context) : IMessageRepository
         return await context.Messages
             .AsNoTracking()
             .OrderByDescending(x => x.CreatedAt)
+            .Where(x =>x.SenderId == sender_id)
             .Skip((page - 1) * page_size)
             .Take(page_size)
             .ToListAsync();

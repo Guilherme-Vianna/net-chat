@@ -6,5 +6,5 @@ namespace NetChat.Services.Interfaces;
 public interface IMessageService
 {
     public Task<MessageViewModel> CreateMessage(CreateMessageDto dto);
-    public Task<List<MessageViewModel>> GetMessages(int page, int page_size);
+    public Task<List<MessageViewModel>> GetMessages(Guid sender_id, int page, int page_size);
 }
