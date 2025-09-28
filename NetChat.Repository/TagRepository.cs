@@ -57,6 +57,7 @@ namespace NetChat.Repository
 
             return await context.Tags
                 .AsNoTracking()
+                .OrderByDescending(x => x.CreatedAt)
                 .Skip((page - 1) * page_size)
                 .Take(page_size)
                 .ToListAsync();

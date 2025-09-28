@@ -27,6 +27,8 @@ namespace net_chat_api
             builder.Services.AddScoped<ITagService, TagService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IJwtService, JwtService>();
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            builder.Services.AddScoped<IMessageService, MessageService>();
 
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
