@@ -1,8 +1,4 @@
 <Solution>
-  <Folder Name="/.github/" />
-  <Folder Name="/.github/workflows/">
-    <File Path="docker-image.yml" />
-  </Folder>
   <Project Path="net-chat-api/net-chat-api.csproj" />
   <Project Path="NetChat.Database/NetChat.Database.csproj" />
   <Project Path="NetChat.Models/NetChat.Models.csproj" />
