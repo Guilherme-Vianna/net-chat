@@ -21,11 +21,27 @@ namespace NetChat.Models
             }
             Tags = tags;
         }
+        
+        public void UpdateBasicProperties(string email, string name, List<Guid> tags_ids)
+        {
+            Email = email;
+            Name = name;
+            Tags = [];
+            foreach (var tagId in tags_ids)
+            {
+                Tags.Add(new UserTag(tagId, Id));
+            }
+        }
+        
+        public void UpdatePassword(string passwordHash)
+        {
+            PasswordHash = passwordHash;
+        }
 
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public string Name { get; set; }
         public List<Message> Messages { get; set; }
-        public List<UserTag> Tags { get; set; }
+        public List<UserTag> Tags { get; set; } = [];
     }
 }

@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetChat.Services.Interfaces;
 using NetChat.Services.Models.CreateDto;
+using NetChat.Services.Models.UpdateDto;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace net_chat_api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class TagsController(ITagService service) : ControllerBase
     {
