@@ -73,7 +73,7 @@ namespace net_chat_api
                 app.MapOpenApi();
             }
 
-            app.UseCors();
+            app.UseCors("AllowAllOrigins");
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
