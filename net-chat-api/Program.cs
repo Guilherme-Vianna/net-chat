@@ -17,6 +17,17 @@ namespace net_chat_api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin() 
+                               .AllowAnyHeader() 
+                               .AllowAnyMethod(); 
+                    });
+            });
+
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<NetChatContext>(options =>
                 options.UseNpgsql(connectionString));
@@ -61,6 +72,7 @@ namespace net_chat_api
                 app.MapOpenApi();
             }
 
+            app.UseCors("AllowAllOrigins");
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
