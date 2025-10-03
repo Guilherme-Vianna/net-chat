@@ -17,6 +17,7 @@ namespace net_chat_api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Configuration.AddEnvironmentVariables();
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins",
@@ -72,7 +73,7 @@ namespace net_chat_api
                 app.MapOpenApi();
             }
 
-            app.UseCors("AllowAllOrigins");
+            app.UseCors();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
