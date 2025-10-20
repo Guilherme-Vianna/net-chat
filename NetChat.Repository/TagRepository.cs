@@ -61,5 +61,24 @@ namespace NetChat.Repository
                 .Take(page_size)
                 .ToListAsync();
         }
+
+        public async Task<List<Tag>> GetMostRecent(int count)
+        {
+            return await context.Tags
+                .AsNoTracking()
+                .OrderByDescending(x => x.CreatedAt)
+                .Take(count)
+                .ToListAsync();
+        }
+
+        public async Task<Tag> CreateIfNotExistOrReturnIfExist(Tag tag)
+        {
+            var existingTag = await context.Tags.FirstOrDefaultAsync(x => x.Name == tag.Name);
+            if (existingTag != null) return existingTag;
+    
+            var newTag = await context.Tags.AddAsync(tag);
+            await context.SaveChangesAsync();
+            return newTag.Entity;
+        }
     }
 }

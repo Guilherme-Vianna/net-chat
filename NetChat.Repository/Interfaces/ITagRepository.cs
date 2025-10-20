@@ -14,5 +14,7 @@ namespace NetChat.Repository.Interfaces
         public Task UpdateTag(Tag tag);
         public Task<Tag> GetTagById(Guid tagId);
         public Task DeleteTag(Guid tagId);
+        public Task<List<Tag>> GetMostRecent(int count);
+        public Task<Tag> CreateIfNotExistOrReturnIfExist(Tag tag);
     }
 }

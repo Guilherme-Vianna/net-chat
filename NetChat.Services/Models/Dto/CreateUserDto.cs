@@ -9,6 +9,6 @@ namespace NetChat.Services.Models.UpdateDto
         public string email { get; set; }
         public string name { get; set; }
         public string password { get; set; }
-        public List<Guid> tags_ids { get; set; }
+        public List<string> tags { get; set; }
     }
 }

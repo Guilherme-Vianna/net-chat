@@ -8,9 +8,9 @@ namespace NetChat.Services.Models.ViewModels
     {
         public LoginResponseViewModel(string token)
         {
-            Token = token;
+            this.token = token;
         }
 
-        public  string Token { init; get; }
+        public  string token { init; get; }
     }
 }

@@ -9,7 +9,7 @@ using NetChat.Services.Models.Dto;
 
 namespace NetChat.Services
 {
-    public class UserService(IUserRepository repository) : IUserService
+    public class UserService(IUserRepository repository, ITagRepository tagRepository) : IUserService
     {
         public async Task<UserViewModel> GetUser(Guid userId)
         {
@@ -31,7 +31,16 @@ namespace NetChat.Services
             if (emailExist) throw new Exception("Email exist!");
             
             var passwordHash = PasswordHasher.HashPassword(createUserDto.password);
-            var newUser = new User(createUserDto.email, passwordHash, createUserDto.name, createUserDto.tags_ids);
+
+            var tags = new List<Tag>();
+
+            foreach (var newTag in createUserDto.tags)
+            {
+                var tag = new Tag(newTag);
+                tags.Add(await tagRepository.CreateIfNotExistOrReturnIfExist(tag));
+            }
+
+            var newUser = new User(createUserDto.email, passwordHash, createUserDto.name, tags.Select(x => x.Id).ToList());
             await repository.CreateUser(newUser);
             
             var result = await repository.GetUserByIdAsyncWithTags(newUser.Id);

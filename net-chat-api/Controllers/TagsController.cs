@@ -27,9 +27,17 @@ namespace net_chat_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Post([FromQuery] int page, [FromQuery] int page_size)
+        public async Task<IActionResult> GetAll([FromQuery] int page, [FromQuery] int page_size)
         {
             var result = await service.GetTagsAsync(page, page_size);
+            return Ok(result);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("most-recent")]
+        public async Task<IActionResult> GetMostRecent()
+        {
+            var result = await service.GetMostRecent();
             return Ok(result);
         }
 

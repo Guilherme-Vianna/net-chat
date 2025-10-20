@@ -1,4 +1,5 @@
-﻿using NetChat.Models;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using NetChat.Models;
 using NetChat.Repository.Interfaces;
 using NetChat.Services.Interfaces;
 using NetChat.Services.Models.CreateDto;
@@ -45,13 +46,20 @@ namespace NetChat.Services
             var totalCount = await repository.GetTagCount();
             var tags = await repository.GetTagsAsync(page, page_size); 
             var tagsView = tags.Select(x => new TagViewModel(x)).ToList();
-            return new TagListViewModel(totalCount, tagsView);
+            return new TagListViewModel(tagsView, totalCount);
         }
 
         public async Task<TagViewModel> GetTag(Guid id)
         {
             var tag = await repository.GetTagById(id);
             return new TagViewModel(tag);
+        }
+
+        public async Task<TagListViewModel> GetMostRecent()
+        {
+            var tags = await repository.GetMostRecent(8);
+            var tagsView = tags.Select(x => new TagViewModel(x)).ToList();
+            return new TagListViewModel(tagsView);
         }
     }
 }
