@@ -4,6 +4,7 @@ using NetChat.Services.Models.UpdateDto;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NetChat.Services.Models.Dto;
+using System.Security.Claims;
 
 namespace net_chat_api.Controllers
 {
@@ -18,7 +19,16 @@ namespace net_chat_api.Controllers
             var result = await service.GetUser(id);
             return Ok(result);
         }
-        
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetData()
+        {
+            var userId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await service.GetUser(Guid.Parse(userId));
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateUserDto dto)
         {
@@ -27,10 +37,11 @@ namespace net_chat_api.Controllers
         }
         
         [Authorize]
-        [HttpPut("{id:guid}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserDto dto)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateUserDto dto)
         {
-            dto.id = id;
+            var userId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            dto.id = Guid.Parse(userId);
             var result = await service.UpdateAsync(dto);
             return Ok(result);
         }

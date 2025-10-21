@@ -18,7 +18,7 @@ namespace NetChat.Services
             var result = new UserViewModel(
                 id: userSearch.Id, 
                 email: userSearch.Email, 
-                name: userSearch.Email, 
+                name: userSearch.Name, 
                 userTags: userSearch.Tags
             );
             return result;
@@ -58,8 +58,16 @@ namespace NetChat.Services
             
             var user = await repository.GetUserByIdToEditAsync(dto.id);
             if (user == null) throw new Exception("User not exist!");
-            
-            user.UpdateBasicProperties(dto.email, dto.name, dto.tags_ids);
+
+            var tags = new List<Tag>();
+
+            foreach (var newTag in dto.tags)
+            {
+                var tag = new Tag(newTag);
+                tags.Add(await tagRepository.CreateIfNotExistOrReturnIfExist(tag));
+            }
+
+            user.UpdateBasicProperties(dto.email, dto.name, tags.Select(x => x.Id).ToList());
             await repository.Update(user);
             var result = await repository.GetUserByIdAsyncWithTags(user.Id);
             if (result == null) throw new Exception("User not found!");
@@ -104,6 +112,11 @@ namespace NetChat.Services
         {
             var emailExist = await repository.ExistEmail(email);
             return emailExist;
+        }
+
+        public Task<UserViewModel> GetData()
+        {
+            throw new NotImplementedException();
         }
     }
 }

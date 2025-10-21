@@ -42,17 +42,15 @@ namespace NetChat.Repository
                 .AsNoTracking()
                 .Include(x => x.Tags)
                 .ThenInclude(x => x.Tag)
-                .FirstOrDefaultAsync(u => u.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<User?> GetUserByIdToEditAsync(Guid id)
         {
             return await context
                 .Users
-                .Include(x => x.Tags)
-                .ThenInclude(x => x.Tag)
-                .Include(x => x.Messages)
-                .FirstOrDefaultAsync(u => u.Id == id);
+                .Include(x =>x.Tags)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task Update(User user)
@@ -68,14 +66,14 @@ namespace NetChat.Repository
                 .AsNoTracking()
                 .Include(x => x.Tags)
                 .ThenInclude(x => x.Tag)
-                .FirstOrDefaultAsync(u => u.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await context.Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Email == email);
+                .FirstOrDefaultAsync(x => x.Email == email);
         }
     }
 }

@@ -2,9 +2,6 @@
 using NetChat.Services.Models.Dto;
 using NetChat.Services.Models.ViewModels;
 using NetChat.Services.Security;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetChat.Services
 {
