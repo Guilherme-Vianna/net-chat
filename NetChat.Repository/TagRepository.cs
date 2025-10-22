@@ -80,5 +80,11 @@ namespace NetChat.Repository
             await context.SaveChangesAsync();
             return newTag.Entity;
         }
+
+        public async Task<Guid?> GetTagIdByName(string name)
+        {
+            var tag = await context.Tags.AsNoTracking().FirstOrDefaultAsync(x => x.Name == name);
+            return tag?.Id;
+        }
     }
 }

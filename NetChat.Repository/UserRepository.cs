@@ -3,6 +3,7 @@ using NetChat.Database;
 using NetChat.Models;
 using NetChat.Repository.Interfaces;
 using System;
+using System.Reflection.Metadata.Ecma335;
 
 namespace NetChat.Repository
 {
@@ -74,6 +75,30 @@ namespace NetChat.Repository
             return await context.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Email == email);
+        }
+
+        public async Task<User?> GetUserThatHaveTagList(List<Guid> tags_ids, int minMatchTags, Guid user_id)
+        {
+            var usersThatHaveAtLeastOneTag =
+                context.UserTags.Where(x => tags_ids.Contains(x.TagId) && x.UserId != user_id).GroupBy(x => x.UserId);
+
+            var usersScore = new List<Tuple<Guid, int>>();
+
+            foreach (var user in usersThatHaveAtLeastOneTag)
+            {
+                var score = 0;
+                foreach (var item in user.Select(x => x.TagId))
+                {
+                    if(tags_ids.Contains(item))
+                    {
+                        score++;
+                    }
+                }
+
+                usersScore.Add(new Tuple<Guid, int>(user.Key, score));
+            }
+
+            return await GetUserByIdAsync(usersScore.OrderByDescending(x => x.Item2).Select(x => x.Item1).FirstOrDefault());
         }
     }
 }

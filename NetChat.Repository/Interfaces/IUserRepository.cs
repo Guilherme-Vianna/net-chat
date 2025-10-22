@@ -13,7 +13,8 @@ namespace NetChat.Repository.Interfaces
         public Task Update(User user);
         public Task<User?> GetUserByIdAsyncWithTags(Guid id);
         public Task<User?> GetUserByEmailAsync(string email);
-        public Task<bool> ExistEmail(string email, Guid userId);
+        public Task<bool> ExistEmail(string email, Guid user_id);
         public Task<bool> ExistEmail(string email);
+        public Task<User?> GetUserThatHaveTagList(List<Guid> tags_ids, int minMatchTags, Guid user_id);
     }
 }
