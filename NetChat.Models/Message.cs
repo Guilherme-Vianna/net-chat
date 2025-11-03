@@ -8,9 +8,15 @@ namespace NetChat.Models
         {
 
         }
-        public string Email { get; set; }
-        public string PasswordHash { get; set; }
-        public string Name { get; set; }
+
+        public Message(string data, Guid senderId, Guid recipientId)
+        {
+            Data = data;
+            SenderId = senderId;
+            RecipientId = recipientId;
+        }
+
+        public string Data { get; set; }
         public User Sender { get; set; }
         public Guid SenderId { get; set; }
         public User Recipient { get; set; }

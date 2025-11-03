@@ -40,6 +40,8 @@ namespace net_chat_api
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IJwtService, JwtService>();
             builder.Services.AddScoped<IChatService, ChatService>();
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            builder.Services.AddScoped<IMessageService, MessageService>();
 
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
@@ -74,6 +76,7 @@ namespace net_chat_api
                 app.MapOpenApi();
             }
 
+            app.UseWebSockets();
             app.UseCors("AllowAllOrigins");
             app.UseHttpsRedirection();
             app.UseAuthentication();
