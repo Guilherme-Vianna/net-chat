@@ -100,5 +100,12 @@ namespace NetChat.Repository
 
             return await GetUserByIdAsync(usersScore.OrderByDescending(x => x.Item2).Select(x => x.Item1).FirstOrDefault());
         }
+
+        public async Task<UserFriend> AddUserFriend(Guid userId, Guid friendId)
+        {
+            var newUserFriend = await context.UserFriends.AddAsync(new UserFriend(userId, friendId));
+            await context.SaveChangesAsync();   
+            return newUserFriend.Entity;
+        }
     }
 }

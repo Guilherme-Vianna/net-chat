@@ -16,5 +16,6 @@ namespace NetChat.Repository.Interfaces
         public Task<bool> ExistEmail(string email, Guid user_id);
         public Task<bool> ExistEmail(string email);
         public Task<User?> GetUserThatHaveTagList(List<Guid> tags_ids, int minMatchTags, Guid user_id);
+        public Task<UserFriend> AddUserFriend(Guid userId, Guid friendId);
     }
 }

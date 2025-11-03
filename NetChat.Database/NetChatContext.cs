@@ -22,5 +22,6 @@ namespace NetChat.Database
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserTag> UserTags { get; set; }
+        public DbSet<UserFriend> UserFriends { get; set; }
     }
 }

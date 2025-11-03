@@ -118,5 +118,12 @@ namespace NetChat.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task AddFriend(AddUserFriendDto dto)
+        {
+            await repository.StartTransaction();
+            await repository.AddUserFriend(dto.user_id, dto.friend_id);
+            await repository.CommitTransaction();
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace net_chat_api.Controllers
             var result = await service.CreateAsync(dto);
             return Ok(result);
         }
-        
+
         [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateUserDto dto)
@@ -44,6 +44,15 @@ namespace net_chat_api.Controllers
             dto.id = Guid.Parse(userId);
             var result = await service.UpdateAsync(dto);
             return Ok(result);
+        }
+        
+        [Authorize]
+        [HttpPut("friends")]
+        public async Task<IActionResult> AddFriend([FromBody] AddUserFriendDto dto)
+        {
+            dto.InsertUserId(Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value));
+            await service.AddFriend(dto);
+            return Ok();
         }
         
         [Authorize]

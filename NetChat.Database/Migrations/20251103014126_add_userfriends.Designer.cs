@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetChat.Database;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NetChat.Database.Migrations
 {
     [DbContext(typeof(NetChatContext))]
-    partial class NetChatContextModelSnapshot : ModelSnapshot
+    [Migration("20251103014126_add_userfriends")]
+    partial class add_userfriends
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,7 +137,7 @@ namespace NetChat.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("user_friends", (string)null);
+                    b.ToTable("UserFriends");
                 });
 
             modelBuilder.Entity("NetChat.Models.UserTag", b =>
