@@ -29,6 +29,15 @@ namespace net_chat_api.Controllers
             return Ok(result);
         }
 
+        [Authorize]
+        [HttpGet("friends")]
+        public async Task<IActionResult> GetFriends()
+        {
+            var userId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await service.GetFriends(Guid.Parse(userId));
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateUserDto dto)
         {

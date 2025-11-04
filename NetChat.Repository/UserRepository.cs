@@ -3,6 +3,7 @@ using NetChat.Database;
 using NetChat.Models;
 using NetChat.Repository.Interfaces;
 using System;
+using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 
 namespace NetChat.Repository
@@ -36,13 +37,21 @@ namespace NetChat.Repository
                 .AnyAsync(u => u.Email == email && u.Id != userId);
         }
 
-        public async Task<User?> GetUserByIdAsync(Guid id)
+        public async Task<User?> GetUserByIdWithTagsAsync(Guid id)
         {
             return await context
                 .Users
                 .AsNoTracking()
                 .Include(x => x.Tags)
                 .ThenInclude(x => x.Tag)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<User?> GetUserByIdAsync(Guid id)
+        {
+            return await context
+                .Users
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -98,7 +107,7 @@ namespace NetChat.Repository
                 usersScore.Add(new Tuple<Guid, int>(user.Key, score));
             }
 
-            return await GetUserByIdAsync(usersScore.OrderByDescending(x => x.Item2).Select(x => x.Item1).FirstOrDefault());
+            return await GetUserByIdWithTagsAsync(usersScore.OrderByDescending(x => x.Item2).Select(x => x.Item1).FirstOrDefault());
         }
 
         public async Task<UserFriend> AddUserFriend(Guid userId, Guid friendId)
@@ -106,6 +115,13 @@ namespace NetChat.Repository
             var newUserFriend = await context.UserFriends.AddAsync(new UserFriend(userId, friendId));
             await context.SaveChangesAsync();   
             return newUserFriend.Entity;
+        }
+        public async Task<List<UserFriend>> GetUserFriendsQueryable(Guid userId)
+        {
+            return await context.UserFriends
+                .Where(x => x.UserId == userId)
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }

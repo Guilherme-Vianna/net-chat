@@ -9,11 +9,11 @@ using NetChat.Services.Models.Dto;
 
 namespace NetChat.Services
 {
-    public class UserService(IUserRepository repository, ITagRepository tagRepository) : IUserService
+    public class UserService(IUserRepository repository, ITagRepository tagRepository, IMessageRepository messageRepository) : IUserService
     {
         public async Task<UserViewModel> GetUser(Guid userId)
         {
-            var userSearch = await repository.GetUserByIdAsync(userId);
+            var userSearch = await repository.GetUserByIdWithTagsAsync(userId);
             if (userSearch == null) throw new Exception("User not found");
             var result = new UserViewModel(
                 id: userSearch.Id, 
@@ -124,6 +124,28 @@ namespace NetChat.Services
             await repository.StartTransaction();
             await repository.AddUserFriend(dto.user_id, dto.friend_id);
             await repository.CommitTransaction();
+        }
+
+        public async Task<List<FriendViewModel>> GetFriends(Guid userId)
+        {
+            var userFriends = await repository.GetUserFriendsQueryable(userId);
+            var result = new List<FriendViewModel>();
+
+            foreach (var friend in userFriends)
+            {
+                var lastMessage = await messageRepository.GetLastMessage(userId, friend.FriendId);
+                var userFriend = await repository.GetUserByIdAsync(friend.FriendId); 
+                if(userFriend == null) throw new Exception("Friend user not found");
+
+                result.Add(new FriendViewModel(
+                    lastMessage?.Data ?? null,
+                    lastMessage?.CreatedAt ?? null,
+                    userFriend.Name,
+                    friend.FriendId
+                ));
+            }
+
+            return result;
         }
     }
 }
